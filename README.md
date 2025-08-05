@@ -2,7 +2,7 @@
 
 `timescale 1ns/1ps
 
-module lift( input c_out, rst ,
+module lift( input clk, rst ,
              input [1:0] floor_request ,
              output reg move_up , move_down , open_door,
              output reg [1:0] floor
@@ -18,7 +18,7 @@ parameter
         door_open   = 3'b011,
         door_close  = 3'b100;
 
-always@(posedge c_out or negedge rst)begin 
+always@(posedge clk or negedge rst)begin 
     if(!rst)begin 
     ps<=idle;
     ns<=idle;
@@ -84,7 +84,7 @@ case(ps)
  endcase
  end
  
- always @(posedge c_out or negedge rst)
+ always @(posedge clk or negedge rst)
  begin 
  
  case(ps)
