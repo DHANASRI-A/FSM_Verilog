@@ -3,14 +3,14 @@
 
 module lift( input clk, rst ,
             input [3:0] floor_request ,
-            input [1:0] current_floor,
              output reg move_up , move_down , open_door,
             output reg [1:0] floor,            
             output reg [3:0] f_o
              );
 reg [2:0] ps,ns;
 reg [4:0] timer;
-reg [1:0] f_r;
+  reg [1:0] f_r;
+  reg [3:0]fr;
   reg invalid;
 parameter 
         idle        = 3'b000,
@@ -18,27 +18,28 @@ parameter
         moving_down = 3'b010,
         door_open   = 3'b011,
         door_close  = 3'b100;
-  always@(*)begin
-    case(floor_request)
-      4'b0001:begin
-        f_r=2'b00;
-        invalid=1'b0;
-      end
-      4'b0010:begin
-        f_r=2'b01;
-        invalid=1'b0;
-      end
-      4'b0100:begin
-        f_r=2'b10;
-        invalid=1'b0;
-      end
-      4'b1000:begin
-        f_r=2'b11;
-        invalid=1'b0;
-      end
-      default:
-        invalid=1'b1;
-    endcase
+  always@(posedge clk or negedge rst)begin
+    if(!rst)
+      fr=4'b0000;
+    else if(fr==4'b0000)
+      fr<=floor_request;
+    else if(fr[0]==1)begin
+      f_r<=2'b00;
+      fr[0]<=0;
+    end
+    else if(fr[1]==1)begin
+      f_r<=2'b01;
+      fr[1]<=0;
+    end
+    else if(fr[2]==1)begin
+      f_r<=2'b10;
+      fr[2]<=0;
+    end
+    else if(fr[3]==1)begin
+      f_r<=2'b11;
+      f_r[3]<=0;
+    end
+  
   end
   always@(*)begin
     case(floor)
@@ -83,23 +84,23 @@ case(ps)
  idle:begin     
    if(f_r==floor&&!invalid)
     ns=door_open;
-    else if(f_r>floor)
+   else if(f_r>floor)
     ns=moving_up;
-    else if(f_r<floor)
+   else if(f_r<floor)
     ns=moving_down;
     else 
     ns=idle;end
  moving_up:begin
-    if(f_r==floor)
+   if(f_r==floor)
     ns=door_open;
-    else if(f_r>floor)
+   else if(f_r>floor)
     ns=moving_up;
     else 
     ns=idle;end
  moving_down:begin
-     if(f_r==floor)
+   if(f_r==floor)
     ns=door_open;
-    else if(f_r<floor)
+   else if(f_r<floor)
     ns=moving_down;
     else 
     ns=idle;end
@@ -155,5 +156,4 @@ case(ps)
     end 
  endcase
  end
-endmodule              
-             
+endmodule
