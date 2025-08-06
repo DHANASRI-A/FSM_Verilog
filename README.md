@@ -1,21 +1,17 @@
-
 ```verilog
-
-
 `timescale 1ns/1ps
 
 module lift( input clk, rst ,
             input [3:0] floor_request ,
+            input [1:0] current_floor,
              output reg move_up , move_down , open_door,
             output reg [1:0] floor,            
             output reg [3:0] f_o
              );
 reg [2:0] ps,ns;
 reg [4:0] timer;
-  reg [1:0] f_r;
-
-
-             
+reg [1:0] f_r;
+  reg invalid;
 parameter 
         idle        = 3'b000,
         moving_up   = 3'b001,
@@ -24,16 +20,24 @@ parameter
         door_close  = 3'b100;
   always@(*)begin
     case(floor_request)
-      4'b0001:
+      4'b0001:begin
         f_r=2'b00;
-      4'b0010:
+        invalid=1'b0;
+      end
+      4'b0010:begin
         f_r=2'b01;
-      4'b0100:
+        invalid=1'b0;
+      end
+      4'b0100:begin
         f_r=2'b10;
-      4'b1000:
+        invalid=1'b0;
+      end
+      4'b1000:begin
         f_r=2'b11;
+        invalid=1'b0;
+      end
       default:
-        f_r=2'b00;
+        invalid=1'b1;
     endcase
   end
   always@(*)begin
@@ -42,17 +46,14 @@ parameter
         f_o=4'b0001;
       2'b01:
         f_o=4'b0010;
-      2'b10:
+      2'b10: 
         f_o=4'b0100;
       2'b11:
         f_o=4'b1000;
       default:
         f_o=4'b0000;
-    endcase
-      
+    endcase     
   end
-  
-
 always@(posedge clk or negedge rst)begin 
     if(!rst)begin 
     ps<=idle;
@@ -73,19 +74,14 @@ always@(posedge clk or negedge rst)begin
         if(timer==3)
         timer<=0;
         else 
-        timer<=timer+1;end
-        
-    end
-        
- end
-    
+        timer<=timer+1;
+        end        
+    end        
+ end    
   always@(*)begin 
-
-
 case(ps)
- idle:begin
-     
-   if(f_r==floor)
+ idle:begin     
+   if(f_r==floor&&!invalid)
     ns=door_open;
     else if(f_r>floor)
     ns=moving_up;
@@ -118,28 +114,23 @@ case(ps)
   default: ns=idle;
  endcase
  end
- 
  always @(posedge clk or negedge rst)
- begin 
- 
+ begin  
  case(ps)
  idle:
     begin 
-
     move_up<=0;
     move_down<=0;
     open_door<=0;
  end
  moving_up:
     begin
-
     move_up<=1;
     move_down<=0;
     open_door<=0;
     end
  moving_down:
     begin 
-
     move_up<=0;
     move_down<=1;
     open_door<=0;
@@ -153,18 +144,15 @@ case(ps)
     end 
  door_close:
     begin
-
     move_up<=0;
     move_down<=0;
     open_door<=0;
     end 
  default:begin 
-
     move_up<=0;
     move_down<=0;
     open_door<=0;
-    end
- 
+    end 
  endcase
  end
 endmodule              
