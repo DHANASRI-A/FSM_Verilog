@@ -1,16 +1,19 @@
 
 ```verilog
 
+
 `timescale 1ns/1ps
 
 module lift( input clk, rst ,
             input [3:0] floor_request ,
              output reg move_up , move_down , open_door,
-             output reg [1:0] floor
+            output reg [1:0] floor,            
+            output reg [3:0] f_o
              );
 reg [2:0] ps,ns;
 reg [4:0] timer;
-  reg [1:0] f_r; 
+  reg [1:0] f_r;
+
 
              
 parameter 
@@ -32,6 +35,21 @@ parameter
       default:
         f_r=2'b00;
     endcase
+  end
+  always@(*)begin
+    case(floor)
+      2'b00:
+        f_o=4'b0001;
+      2'b01:
+        f_o=4'b0010;
+      2'b10:
+        f_o=4'b0100;
+      2'b11:
+        f_o=4'b1000;
+      default:
+        f_o=4'b0000;
+    endcase
+      
   end
   
 
