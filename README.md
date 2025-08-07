@@ -1,4 +1,5 @@
 ```verilog
+// Code your design here
 `timescale 1ns/1ps
 
 module lift( input clk, rst ,
@@ -8,7 +9,7 @@ module lift( input clk, rst ,
             output reg [3:0] f_o
              );
 reg [2:0] ps,ns;
-reg [4:0] timer;
+reg [4:0] timer,timer2;
   reg [1:0] f_r;
   reg [3:0]fr;
   reg invalid;
@@ -19,27 +20,33 @@ parameter
         door_open   = 3'b011,
         door_close  = 3'b100;
   always@(posedge clk or negedge rst)begin
-    if(!rst)
-      fr=4'b0000;
-    else if(fr==4'b0000)
+    if(!rst)begin
+      fr<=4'b0000;
+       timer2<=0;
+    end
+    else if(fr==4'b0000&&timer2==5)
       fr<=floor_request;
-    else if(fr[0]==1)begin
+    else if(fr[0]==1&&timer2==5)begin
+      timer2<=0;
       f_r<=2'b00;
-      fr[0]<=0;
-    end
-    else if(fr[1]==1)begin
+      fr[0]<=0; end
+  else if(fr[1]==1&&timer2==5)begin
+      timer2<=0;
       f_r<=2'b01;
-      fr[1]<=0;
+      fr[1]<=0; 
     end
-    else if(fr[2]==1)begin
+  else if(fr[2]==1&&timer2==5)begin
+      timer2<=0;
       f_r<=2'b10;
       fr[2]<=0;
     end
-    else if(fr[3]==1)begin
+  else if(fr[3]==1&&timer2==5)begin
+      timer2<=0;
       f_r<=2'b11;
-      f_r[3]<=0;
+      fr[3]<=0;
     end
-  
+   else
+     timer2<=timer2+1;
   end
   always@(*)begin
     case(floor)
