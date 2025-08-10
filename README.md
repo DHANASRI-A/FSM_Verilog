@@ -503,7 +503,7 @@ The following constraints were applied to interface the design signals properly 
 
 For detailed pin locations and PMOD connector mapping, please refer to the figure below:
 
-![ZedBoard PMOD Connector LED Pin Mapping](path_to_image.png)
+![ZedBoard PMOD Connector LED Pin Mapping](https://github.com/DHANASRI-A/VLSI_Projects/blob/0be46fc324880e7d1bf097e1597ca72ac8274495/Pictures/Pmod.png)
 
 
 
