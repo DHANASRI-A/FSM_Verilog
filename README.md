@@ -30,11 +30,12 @@
    - [Floor Display Implementation](#floor-display-implementation)
    - [Code Explanation and Module Overview](#code-explanation-and-module-overview)
 
-3. [Operation Walkthrough](#operation-walkthrough)
-4. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
-5. [Testing and Verification](#testing-and-verification)
-6. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
-7. [Conclusion](#conclusion)
+3. [State Table](#state-table)
+4. [State Transistion Diagram](#state-transistion-diagram)
+5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
+6. [Testing and Verification](#testing-and-verification)
+7. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
+8. [Conclusion](#conclusion)
 
 ---
 
@@ -412,14 +413,26 @@ A separate clock divider module generates the slower clock `c_out` from the 100 
 This integrated design makes the elevator control simple, modular, and easy to extend.
 
 ---
-
-Would you like me to polish any other parts?
-
+## State Table
 
 
+| **Present State** | **Condition**                          | **Next State** | **Outputs**             |
+| ----------------- | -------------------------------------- | -------------- | ----------------------- |
+| Idle              | Valid floor request & target > current | Moving Up      | `move_up=1`, others 0   |
+| Idle              | Valid floor request & target < current | Moving Down    | `move_down=1`, others 0 |
+| Idle              | Valid floor request & target = current | Door Open      | `open_door=1`, others 0 |
+| Moving Up         | Target floor = current                 | Door Open      | `open_door=1`, others 0 |
+| Moving Up         | Target floor > current                 | Moving Up      | `move_up=1`, others 0   |
+| Moving Up         | Target floor < current                 | Moving Down    | `move_down=1`, others 0 |
+| Moving Down       | Target floor = current                 | Door Open      | `open_door=1`, others 0 |
+| Moving Down       | Target floor < current                 | Moving Down    | `move_down=1`, others 0 |
+| Moving Down       | Target floor > current                 | Moving Up      | `move_up=1`, others 0   |
+| Door Open         | Timer < 3                              | Door Open      | `open_door=1`, others 0 |
+| Door Open         | Timer = 3                              | Door Close     | all outputs 0           |
+| Door Close        | Always                                 | Idle           | all outputs 0           |
 
 
-# State Transistion Diagram 
+## State Transistion Diagram 
 
                    +-------+
                    |  idle |
