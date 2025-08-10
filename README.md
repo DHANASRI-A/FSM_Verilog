@@ -121,9 +121,303 @@ endcase
 
 This decoded target floor is then used by the finite state machine (FSM) to decide whether the elevator should move up, move down, or open the door if it is already at the requested floor.
 
-Currently, the system supports only a single floor request at a time and does not queue multiple simultaneous requests.
+---
+
+
+
+### Movement and Door Control Logic
+
+The elevator moves up or down based on the current and target floors, controlled by the FSM states. The door opens when the elevator reaches the target floor and stays open for a fixed time using a timer.
+
+**Key behaviors:**
+
+* Move up: Increment floor until target is reached.
+* Move down: Decrement floor until target is reached.
+* Door open: Stay open for 3 clock cycles.
+* Door close: Transition back to idle.
+
+**Relevant code snippets:**
+
+```verilog
+// Floor movement logic
+if (ps == moving_up && floor != 2'b11 && floor != f_r)
+    floor <= floor + 1;
+else if (ps == moving_down && floor != 2'b00 && floor != f_r)
+    floor <= floor - 1;
+
+// Timer logic for door open state
+if (ps == door_open) begin
+    if (timer == 3)
+        timer <= 0;
+    else
+        timer <= timer + 1;
+end else
+    timer <= 0;
+
+// Output control based on state
+case (ps)
+    moving_up: begin
+        move_up <= 1;
+        move_down <= 0;
+        open_door <= 0;
+    end
+    moving_down: begin
+        move_up <= 0;
+        move_down <= 1;
+        open_door <= 0;
+    end
+    door_open: begin
+        move_up <= 0;
+        move_down <= 0;
+        open_door <= 1;
+    end
+    default: begin
+        move_up <= 0;
+        move_down <= 0;
+        open_door <= 0;
+    end
+endcase
+```
+
+This logic ensures smooth elevator movement and door timing aligned with the FSM states.
 
 ---
+
+### Floor Display Implementation
+
+The elevator’s current floor is shown using a one-hot encoded 4-bit output signal `f_o`. Each bit corresponds to an LED indicator representing a floor:
+
+* `4'b0001` → Floor 0 LED ON
+* `4'b0010` → Floor 1 LED ON
+* `4'b0100` → Floor 2 LED ON
+* `4'b1000` → Floor 3 LED ON
+
+This one-hot encoding simplifies the hardware interface, allowing direct connection to LED indicators.
+
+**Code snippet for floor display decoding:**
+
+```verilog
+// Decode current floor to one-hot output for LEDs
+case (floor)
+    2'b00: f_o = 4'b0001;
+    2'b01: f_o = 4'b0010;
+    2'b10: f_o = 4'b0100;
+    2'b11: f_o = 4'b1000;
+    default: f_o = 4'b0000;
+endcase
+```
+
+This ensures that only the LED corresponding to the current floor is lit at any time, giving clear visual feedback on the elevator’s position.
+
+---
+
+Got it! Let me make it accurate **and** concise, keeping all important details:
+
+---
+
+### Code Explanation and Module Overview
+
+``` verilog
+module lift(
+    input c_out, 
+    input rst,
+    input [3:0] floor_request,
+    output reg move_up, move_down, open_door,
+    output reg [1:0] floor,
+    output reg [3:0] f_o
+);
+             
+reg [2:0] ps, ns;
+reg [4:0] timer;
+reg [1:0] f_r;
+reg invalid;
+
+// State encoding
+parameter 
+    idle        = 3'b000,
+    moving_up   = 3'b001,
+    moving_down = 3'b010,
+    door_open   = 3'b011,
+    door_close  = 3'b100;
+
+//combinational block
+
+always @(*) begin
+
+    // Default values to avoid latches
+
+    ns      = ps;
+    f_r     = floor;
+    invalid = 1'b1;
+    f_o     = 4'b0000;
+
+    // Decode floor_request to target floor
+
+    case (floor_request)
+        4'b0001: begin f_r = 2'b00; invalid = 1'b0; end
+        4'b0010: begin f_r = 2'b01; invalid = 1'b0; end
+        4'b0100: begin f_r = 2'b10; invalid = 1'b0; end
+        4'b1000: begin f_r = 2'b11; invalid = 1'b0; end
+        default: begin f_r = floor; invalid = 1'b1; end
+    endcase
+
+    // Decode current floor to one-hot signal
+
+    case (floor)
+        2'b00: f_o = 4'b0001;
+        2'b01: f_o = 4'b0010;
+        2'b10: f_o = 4'b0100;
+        2'b11: f_o = 4'b1000;
+        default: f_o = 4'b0000;
+    endcase
+
+    // Next state (ns) logic
+
+    case (ps)
+        idle: begin
+            if (!invalid) begin
+                if (f_r == floor)
+                    ns = door_open;
+                else if (f_r > floor)
+                    ns = moving_up;
+                else if (f_r < floor)
+                    ns = moving_down;
+            end
+        end
+
+        moving_up: begin
+            if (f_r == floor)
+                ns = door_open;
+            else if (f_r > floor)
+                ns = moving_up;
+            else if (f_r < floor)
+                ns = moving_down; 
+        end
+
+        moving_down: begin
+            if (f_r == floor)
+                ns = door_open;
+            else if (f_r < floor)
+                ns = moving_down;
+            else if (f_r > floor)
+                ns = moving_up; 
+        end
+
+        door_open: begin
+            if (timer == 3)
+                ns = door_close;
+            else
+                ns = door_open;
+        end
+
+        door_close: ns = idle;
+
+        default: ns = idle;
+    endcase
+end
+
+// Sequential logic
+
+always @(posedge c_out or posedge rst) begin
+    if (rst) begin
+        ps        <= idle;
+        move_up   <= 0;
+        move_down <= 0;
+        open_door <= 0;
+        timer     <= 0;
+        floor     <= 2'b00;
+    end
+    else begin
+        ps <= ns;
+
+        // Floor movement logic
+
+        if (ps == moving_up && floor != 2'b11 && floor != f_r)
+            floor <= floor + 1;
+        else if (ps == moving_down && floor != 2'b00 && floor != f_r)
+            floor <= floor - 1;
+
+        // Timer logic
+
+        if (ps == door_open) begin
+            if (timer == 3)
+                timer <= 0;
+            else
+                timer <= timer + 1;
+        end
+        else
+            timer <= 0;
+
+        // Output logic based on present state (ps)
+
+        case (ps)
+            idle: begin
+                move_up   <= 0;
+                move_down <= 0;
+                open_door <= 0;
+            end
+            moving_up: begin
+                move_up   <= 1;
+                move_down <= 0;
+                open_door <= 0;
+            end
+            moving_down: begin
+                move_up   <= 0;
+                move_down <= 1;
+                open_door <= 0;
+            end
+            door_open: begin
+                move_up   <= 0;
+                move_down <= 0;
+                open_door <= 1;
+            end
+            door_close: begin
+                move_up   <= 0;
+                move_down <= 0;
+                open_door <= 0;
+            end
+            default: begin
+                move_up   <= 0;
+                move_down <= 0;
+                open_door <= 0;
+            end
+        endcase
+    end
+end
+
+endmodule
+```
+
+The elevator controller is implemented in Verilog as a single FSM-based module named `lift`. It handles inputs: a slow clock (`c_out`), reset (`rst`), and a 4-bit one-hot floor request.
+
+The FSM includes five states:
+
+* `idle` — waiting for requests
+* `moving_up` — incrementing floors
+* `moving_down` — decrementing floors
+* `door_open` — door is open with timer
+* `door_close` — door closing before idle
+
+Outputs control elevator movement signals (`move_up`, `move_down`), door (`open_door`), current floor (`floor`), and a one-hot floor display (`f_o`).
+
+Key logic blocks include:
+
+* Decoding the one-hot floor request into a target floor register
+* Managing floor count during movement
+* Timing the door open duration with a timer counter
+* Generating the floor display signals for LEDs
+
+A separate clock divider module generates the slower clock `c_out` from the 100 MHz board clock for proper timing.
+
+This integrated design makes the elevator control simple, modular, and easy to extend.
+
+---
+
+Would you like me to polish any other parts?
+
+
+
+
 
 # State Transistion Diagram 
 
