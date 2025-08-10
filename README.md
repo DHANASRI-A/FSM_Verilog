@@ -464,6 +464,48 @@ This integrated design makes the elevator control simple, modular, and easy to e
                    +-------+
 
 
+## FPGA Pin Constraints and Timing
+
+The following constraints were applied to interface the design signals properly with the ZedBoard hardware and ensure timing closure.
+
+### Clock Settings
+
+* **System clock (`clk`)** is configured at **100 MHz** with a 10 ns period, matching the ZedBoard onboard clock.
+* A generated clock `clk_div/led_OBUF` is defined for internal clock division, currently with divide\_by 1.
+
+### I/O Standards and Timing
+
+* All I/O ports use the **LVCMOS18** standard, compatible with ZedBoard voltage levels (1.8 V).
+* Input and output delays are specified with a max delay of 2 ns to assist timing analysis and synthesis.
+
+### Pin Assignments
+
+| Signal             | Pin  | Description                      |
+| ------------------ | ---- | -------------------------------- |
+| `f_o[3]`           | Y11  | Floor indicator LED bit 3        |
+| `f_o[2]`           | AA11 | Floor indicator LED bit 2        |
+| `f_o[1]`           | Y19  | Floor indicator LED bit 1        |
+| `f_o[0]`           | AA9  | Floor indicator LED bit 0        |
+| `clk`              | Y9   | 100 MHz system clock             |
+| `led`              | AA8  | General purpose LED              |
+| `move_down`        | AB10 | Elevator move down control       |
+| `move_up`          | AB11 | Elevator move up control         |
+| `open_door`        | AB9  | Elevator door open control       |
+| `rst`              | R18  | Reset signal                     |
+| `floor_request[3]` | H19  | Floor request input switch bit 3 |
+| `floor_request[2]` | H18  | Floor request input switch bit 2 |
+| `floor_request[1]` | H17  | Floor request input switch bit 1 |
+| `floor_request[0]` | M15  | Floor request input switch bit 0 |
+| `floor[1]`         | W12  | Current floor indicator bit 1    |
+| `floor[0]`         | W11  | Current floor indicator bit 0    |
+
+### Visual Reference
+
+For detailed pin locations and PMOD connector mapping, please refer to the figure below:
+
+![ZedBoard PMOD Connector LED Pin Mapping](path_to_image.png)
+
+
 
 
 ```verilog
