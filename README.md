@@ -1,3 +1,54 @@
+# Project Overview
+
+
+| Aspect                        | Details                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------- |
+| Objective                     | Implementation of a finite state machine (FSM) in Verilog for elevator control. |
+| Floors Supported              | 4                                                                               |
+| Floor Request Handling        | One-hot encoded signal (single request at a time).                              |
+| Door Operation Logic          | Door open for \~3 clock cycles at 2 Hz frequency.                               |
+| Display Output                | LED indicators via PMOD interface.                                              |
+| Target Hardware               | ZedBoard FPGA.                                                                  |
+| Hardware Description Language | Verilog.                                                                        |
+| Key Components                | Clock divider module, FSM design.                                               |
+| Limitations                   | Only single floor request accepted; no multiple concurrent requests supported.  |
+
+
+---
+
+
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. System Architecture
+3. Hardware Interface and Signal Mapping
+4. Design and Implementation Details
+
+   * Clock Divider and Timing Control
+   * Finite State Machine (FSM) Design
+   * Floor Request Processing
+   * Movement and Door Control Logic
+   * Floor Display Implementation
+   * Code Explanation and Module Overview
+5. Operation Walkthrough
+6. ZedBoard Implementation and PMOD LED Mapping
+7. Testing and Verification
+8. Limitations and Future Enhancements
+9. Conclusion
+
+---
+
+
+### Introduction
+
+This project implements a finite state machine (FSM) in Verilog to control a digital elevator system. It covers essential functions such as floor request handling, movement control, door timing, and floor display on an FPGA platform. The design serves as a practical example of hardware description and digital system design.
+
+---
+
+
+
+
 # State Transistion Diagram 
 
                    +-------+
