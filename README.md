@@ -33,8 +33,8 @@
 3. [State Table](#state-table)
 4. [State Transistion Diagram](#state-transistion-diagram)
 5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
-6. [Resource Utilization](#resource-utilization)
-7. [Post-Synthesis RTL Schematic – Elevator Controller](#post-synthesis-rtl-schematic-–-elevator-controller)
+6. [Schematic](#schematic)
+7. [Resource Utilization](#resource-utilization)
 8. [Output Video](#output-video)
 9. [Future Work](#future-work)
 10. [Conclusion](#conclusion)
@@ -507,6 +507,13 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 
 ![ZedBoard PMOD Connector LED Pin Mapping](https://github.com/DHANASRI-A/VLSI_Projects/blob/0be46fc324880e7d1bf097e1597ca72ac8274495/Pictures/Pmod.png)
 
+---
+
+## Schematic
+
+![Post-Synthesis RTL Schematic – Elevator Controller](https://github.com/DHANASRI-A/VLSI_Projects/blob/7d6cd60da5ec3933272145f6412251b1999c076b/Pictures/Schematic.png)
+
+
 
 ## Output Video
 
@@ -517,6 +524,8 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 ## Resource Utilization
 
 ![image alt](https://github.com/DHANASRI-A/VLSI_Projects/blob/8b240c7f7d10d2fe119c465f001cc209d9c9884c/Pictures/Resource%20Utilization.png)
+
+
 
 
 ## **Future Work**
