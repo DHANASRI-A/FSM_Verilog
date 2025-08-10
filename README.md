@@ -34,9 +34,10 @@
 4. [State Transistion Diagram](#state-transistion-diagram)
 5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
 6. [Resource Utilization](#resource-utilization)
-7. [Output Video](#output-video)
-8. [Future Work](#future-work)
-9. [Conclusion](#conclusion)
+7. [Post-Synthesis RTL Schematic – Elevator Controller](#post-synthesis-rtl-schematic-–-elevator-controller)
+8. [Output Video](#output-video)
+9. [Future Work](#future-work)
+10. [Conclusion](#conclusion)
 
 ---
 
