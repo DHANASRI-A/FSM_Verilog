@@ -93,16 +93,37 @@ The asynchronous reset (`rst`) initializes the counter and output to zero for a 
 
 ## Finite State Machine (FSM) Design
 
----
 
-
-
-
----
 
 ## Floor Request Processing
 
+The elevator receives floor requests through a 4-bit one-hot encoded input signal `floor_request`. Each bit corresponds to a specific floor:
 
+* `4'b0001` → Floor 0
+* `4'b0010` → Floor 1
+* `4'b0100` → Floor 2
+* `4'b1000` → Floor 3
+
+The system decodes this input to determine the target floor (`f_r`) for the elevator to move to. If the input matches one of the valid one-hot patterns, the corresponding floor is selected. If the input is invalid (e.g., no bits set or multiple bits set), the elevator continues to stay at the current floor.
+
+Below is the core Verilog snippet that handles this decoding:
+
+```verilog
+// Decode floor_request to target floor
+case (floor_request)
+    4'b0001: f_r = 2'b00;  // Request for floor 0
+    4'b0010: f_r = 2'b01;  // Request for floor 1
+    4'b0100: f_r = 2'b10;  // Request for floor 2
+    4'b1000: f_r = 2'b11;  // Request for floor 3
+    default: f_r = floor;  // Invalid request - hold current floor
+endcase
+```
+
+This decoded target floor is then used by the finite state machine (FSM) to decide whether the elevator should move up, move down, or open the door if it is already at the requested floor.
+
+Currently, the system supports only a single floor request at a time and does not queue multiple simultaneous requests.
+
+---
 
 # State Transistion Diagram 
 
