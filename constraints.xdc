@@ -1,5 +1,3 @@
-```tcl
-
 create_clock -period 10.000 -name clk -waveform {0.000 5.000} [get_ports clk]
 create_generated_clock -name clk_div/led_OBUF -source [get_ports clk] -divide_by 1 [get_pins clk_div/c_out_reg/Q]
 set_input_delay -clock [get_clocks clk] -min -add_delay 2.000 [get_ports {floor_request[*]}]
