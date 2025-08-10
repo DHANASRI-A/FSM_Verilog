@@ -1,3 +1,37 @@
+# State Transistion Diagram 
+
+                   +-------+
+                   |  idle |
+                   +-------+
+                   
+                     ^  | valid req
+                     |  |
+                     |  v
+     +-------------+      +-------------+
+     | moving_down |<---->|  moving_up  |
+     +-------------+      +-------------+
+                      |
+                      | arrived floor
+                      v        
+                 +------------+
+                 | door_open  |
+                 +------------+
+                      |
+                      | timer done
+                      v
+                 +------------+
+                 | door_close |
+                 +------------+
+                      |
+                      |
+                      v
+                   +-------+
+                   | idle  |
+                   +-------+
+
+
+
+
 ```verilog
 `timescale 1ns/1ps
 
