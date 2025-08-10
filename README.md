@@ -34,10 +34,11 @@
 4. [State Transistion Diagram](#state-transistion-diagram)
 5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
 6. [Schematic](#schematic)
-7. [Resource Utilization](#resource-utilization)
-8. [Output Video](#output-video)
-9. [Future Work](#future-work)
-10. [Conclusion](#conclusion)
+7. [Simulation](#simulation)
+8. [Resource Utilization](#resource-utilization)
+9. [Output Video](#output-video)
+10. [Future Work](#future-work)
+11. [Conclusion](#conclusion)
 
 ---
 
@@ -514,19 +515,19 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 ![Post-Synthesis RTL Schematic – Elevator Controller](https://github.com/DHANASRI-A/VLSI_Projects/blob/7d6cd60da5ec3933272145f6412251b1999c076b/Pictures/Schematic.png)
 
 
-
-## Output Video
-
-[![Elevator FSM Demo on ZedBoard](https://img.youtube.com/vi/E4Hz2WeLNzQ/0.jpg)](https://youtube.com/shorts/E4Hz2WeLNzQ?feature=share)
-
 ---
 
 ## Resource Utilization
 
 ![image alt](https://github.com/DHANASRI-A/VLSI_Projects/blob/8b240c7f7d10d2fe119c465f001cc209d9c9884c/Pictures/Resource%20Utilization.png)
 
+---
 
+## Output Video
 
+[![Elevator FSM Demo on ZedBoard](https://img.youtube.com/vi/E4Hz2WeLNzQ/0.jpg)](https://youtube.com/shorts/E4Hz2WeLNzQ?feature=share)
+
+---
 
 ## **Future Work**
 
