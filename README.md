@@ -464,7 +464,7 @@ This integrated design makes the elevator control simple, modular, and easy to e
                    +-------+
 
 
-## FPGA Pin Constraints and Timing
+## Hardware Interface and ZedBoard PMOD LED Mapping
 
 The following constraints were applied to interface the design signals properly with the ZedBoard hardware and ensure timing closure.
 
