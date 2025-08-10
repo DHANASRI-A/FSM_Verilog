@@ -515,6 +515,7 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 
 ## Resource Utilization
 
+![image alt](https://github.com/DHANASRI-A/VLSI_Projects/blob/8b240c7f7d10d2fe119c465f001cc209d9c9884c/Pictures/Resource%20Utilization.png)
 
 
 ## **Future Work**
