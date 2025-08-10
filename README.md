@@ -33,7 +33,7 @@
 3. [State Table](#state-table)
 4. [State Transistion Diagram](#state-transistion-diagram)
 5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
-6. [Testing and Verification](#testing-and-verification)
+6. [Output Video](#output-video)
 7. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
 8. [Conclusion](#conclusion)
 
@@ -506,6 +506,11 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 ![ZedBoard PMOD Connector LED Pin Mapping](https://github.com/DHANASRI-A/VLSI_Projects/blob/0be46fc324880e7d1bf097e1597ca72ac8274495/Pictures/Pmod.png)
 
 
+## Output Video
+
+[![Elevator FSM Demo on ZedBoard](https://img.youtube.com/vi/E4Hz2WeLNzQ/0.jpg)](https://youtube.com/shorts/E4Hz2WeLNzQ?feature=share)
+
+---
 
 
 ```verilog
