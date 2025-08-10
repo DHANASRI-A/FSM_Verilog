@@ -91,7 +91,16 @@ The asynchronous reset (`rst`) initializes the counter and output to zero for a 
 
 ---
 
+## Finite State Machine (FSM) Design
 
+---
+
+
+
+
+---
+
+## Floor Request Processing
 
 
 
