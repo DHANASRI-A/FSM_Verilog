@@ -38,7 +38,7 @@
 8. [Resource Utilization](#resource-utilization)
 9. [Output Video](#output-video)
 10. [Future Work](#future-work)
-11. [Conclusion](#conclusion)
+11. [Project Authors](#project-authors)
 
 ---
 
@@ -517,6 +517,13 @@ While the current design works well for a basic 4-floor elevator, there’s plen
 * **Recover from faults automatically** — Reduce the need for manual resets by adding self-recovery features.
 
 ---
+## Project Authors
+
+| S.No | Name               | GitHub Profile                                         | LinkedIn Profile                                                                                          |
+| ---- | ------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| 1    | Thaaroone Sarvajit  | [github.com/Thaaroone](https://github.com/Thaaroone)   | [linkedin.com/in/thaaroone-sarvajit-9b9b09329](https://www.linkedin.com/in/thaaroone-sarvajit-9b9b09329/) |
+| 2    | Dhanasri Anbalagan  | [github.com/DHANASRI-A](https://github.com/DHANASRI-A) | [linkedin.com/in/dhanasri-anbalagan-0a5043360](https://www.linkedin.com/in/dhanasri-anbalagan-0a5043360/) |
+
 
 
 
