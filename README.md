@@ -71,9 +71,6 @@ module clockdivider(
 endmodule
 ``` 
 
-
-### Clock Divider and Timing Control 
-
 The ZedBoard provides a 100 MHz input clock (`clk`), which is too fast for timing elevator operations like door opening or floor transitions. To make these actions human-perceivable, we divide the clock down to 2 Hz.
 
 **How 2 Hz is generated:**
