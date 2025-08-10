@@ -34,8 +34,9 @@
 4. [State Transistion Diagram](#state-transistion-diagram)
 5. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
 6. [Output Video](#output-video)
-7. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
-8. [Conclusion](#conclusion)
+7. [Future Work](#future-work)
+8. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
+9. [Conclusion](#conclusion)
 
 ---
 
@@ -509,6 +510,19 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 ## Output Video
 
 [![Elevator FSM Demo on ZedBoard](https://img.youtube.com/vi/E4Hz2WeLNzQ/0.jpg)](https://youtube.com/shorts/E4Hz2WeLNzQ?feature=share)
+
+---
+
+
+## **Future Work**
+
+While the current design works well for a basic 4-floor elevator, there’s plenty of room to make it smarter and more versatile. In the future, we’d like to:
+
+* **Add more floors** — Expand beyond the current 4-floor limit so the design can handle taller buildings.
+* **Handle multiple requests at once** — Let the elevator store and process several floor calls instead of just one at a time.
+* **Make it smarter about movement** — Add logic so it chooses the most efficient path, rather than moving in a fixed order.
+* **Improve how we display floors** — Upgrade from simple LEDs to a 7-segment display, LCD screen, or even a serial output with more detailed status.
+* **Recover from faults automatically** — Reduce the need for manual resets by adding self-recovery features.
 
 ---
 
