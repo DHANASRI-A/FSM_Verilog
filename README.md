@@ -21,18 +21,20 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. Design and Implementation Details
-   * Clock Divider and Timing Control
-   * Finite State Machine (FSM) Design
-   * Floor Request Processing
-   * Movement and Door Control Logic
-   * Floor Display Implementation
-   * Code Explanation and Module Overview
-3. Operation Walkthrough
-4. Hardware Interface and ZedBoard PMOD LED Mapping
-5. Testing and Verification
-6. Limitations and Future Enhancements
-7. Conclusion
+2. [Design and Implementation Details](#design-and-implementation-details)
+   
+   - [Clock Divider and Timing Control](#clock-divider-and-timing-control)
+   - [Finite State Machine (FSM) Design](#finite-state-machine-fsm-design)
+   - [Floor Request Processing](#floor-request-processing)
+   - [Movement and Door Control Logic](#movement-and-door-control-logic)
+   - [Floor Display Implementation](#floor-display-implementation)
+   - [Code Explanation and Module Overview](#code-explanation-and-module-overview)
+
+3. [Operation Walkthrough](#operation-walkthrough)
+4. [Hardware Interface and ZedBoard PMOD LED Mapping](#hardware-interface-and-zedboard-pmod-led-mapping)
+5. [Testing and Verification](#testing-and-verification)
+6. [Limitations and Future Enhancements](#limitations-and-future-enhancements)
+7. [Conclusion](#conclusion)
 
 ---
 
