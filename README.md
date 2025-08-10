@@ -492,7 +492,7 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 
 ## Simulation
 
-![simulation](https://github.com/DHANASRI-A/VLSI_Projects/blob/fd56c28716deac6b50ad21753417d640c282a580/Pictures/Simulation.png)
+![simulation]([https://github.com/DHANASRI-A/VLSI_Projects/blob/fd56c28716deac6b50ad21753417d640c282a580/Pictures/Simulation.png](https://github.com/DHANASRI-A/VLSI_Projects/blob/4fdb178b1c965c0b37febf343ac49526d9b71abc/Pictures/Simulation_lift.png))
 
 ## Resource Utilization
 
