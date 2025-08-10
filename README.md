@@ -21,30 +21,77 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. System Architecture
-3. Hardware Interface and Signal Mapping
-4. Design and Implementation Details
-
+2. Design and Implementation Details
    * Clock Divider and Timing Control
    * Finite State Machine (FSM) Design
    * Floor Request Processing
    * Movement and Door Control Logic
    * Floor Display Implementation
    * Code Explanation and Module Overview
-5. Operation Walkthrough
-6. ZedBoard Implementation and PMOD LED Mapping
-7. Testing and Verification
-8. Limitations and Future Enhancements
-9. Conclusion
+3. Operation Walkthrough
+4. Hardware Interface and ZedBoard PMOD LED Mapping
+5. Testing and Verification
+6. Limitations and Future Enhancements
+7. Conclusion
 
 ---
 
 
-### Introduction
+## Introduction
 
 This project implements a finite state machine (FSM) in Verilog to control a digital elevator system. It covers essential functions such as floor request handling, movement control, door timing, and floor display on an FPGA platform. The design serves as a practical example of hardware description and digital system design.
 
 ---
+## Design and Implementation Details
+
+### Clock Divider and Timing Control
+
+```verilog
+
+module clockdivider(
+    output reg c_out,
+    input clk, rst
+);
+    reg [27:0] count;
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            c_out <= 0;
+            count <= 0;
+        end
+        else if (count == 25000000) begin
+            count <= 0;
+            c_out <= ~c_out;
+        end
+        else begin
+            count <= count + 1;
+        end 
+    end
+endmodule
+``` 
+
+
+### Clock Divider and Timing Control 
+
+The ZedBoard provides a 100 MHz input clock (`clk`), which is too fast for timing elevator operations like door opening or floor transitions. To make these actions human-perceivable, we divide the clock down to 2 Hz.
+
+**How 2 Hz is generated:**
+
+* The module uses a 28-bit counter that increments every 10 ns (1 / 100 MHz).
+* When the counter reaches 25,000,000, it resets and toggles the output clock `c_out`.
+* Since toggling happens every 25 million cycles, one full cycle of `c_out` takes 50 million clock cycles (two toggles per cycle).
+
+Calculating output frequency:
+
+$$
+f_{out} = \frac{f_{in}}{2 \times \text{terminal count}} = \frac{100,000,000}{2 \times 25,000,000} = 2 \text{ Hz}
+$$
+
+So, the output `c_out` toggles at 2 Hz, perfectly pacing the FSM operations for visible elevator behavior.
+
+The asynchronous reset (`rst`) initializes the counter and output to zero for a clean start.
+
+---
+
 
 
 
