@@ -1,6 +1,38 @@
 ```verilog
 `timescale 1ns/1ps
 
+
+// Top Module
+
+module top(
+    input clk, rst,
+    input [3:0] floor_request,
+    output move_up, move_down, open_door,
+    output [1:0] floor,
+    output [3:0] f_o,
+    output led
+);
+    wire c_out;
+    assign led = c_out;
+ 
+    clockdivider clk_div(
+        .c_out(c_out),
+        .clk(clk),
+        .rst(rst)
+    );
+                     
+    lift elevator(
+        .c_out(c_out),
+        .rst(rst),
+        .floor_request(floor_request), 
+        .move_up(move_up), 
+        .move_down(move_down), 
+        .open_door(open_door),
+        .floor(floor),
+        .f_o(f_o)
+    );
+endmodule
+
 module lift(
     input c_out, 
     input rst,
@@ -23,17 +55,19 @@ parameter
     door_open   = 3'b011,
     door_close  = 3'b100;
 
-// =============================
-// Combinational logic (Next state + decoding)
-// =============================
+//combinational block
+
 always @(*) begin
+
     // Default values to avoid latches
+
     ns      = ps;
     f_r     = floor;
     invalid = 1'b1;
     f_o     = 4'b0000;
 
     // Decode floor_request to target floor
+
     case (floor_request)
         4'b0001: begin f_r = 2'b00; invalid = 1'b0; end
         4'b0010: begin f_r = 2'b01; invalid = 1'b0; end
@@ -42,7 +76,8 @@ always @(*) begin
         default: begin f_r = floor; invalid = 1'b1; end
     endcase
 
-    // Decode current floor to one-hot
+    // Decode current floor to one-hot signal
+
     case (floor)
         2'b00: f_o = 4'b0001;
         2'b01: f_o = 4'b0010;
@@ -51,7 +86,8 @@ always @(*) begin
         default: f_o = 4'b0000;
     endcase
 
-    // FSM next state logic
+    // Next state (ns) logic
+
     case (ps)
         idle: begin
             if (!invalid) begin
@@ -70,7 +106,7 @@ always @(*) begin
             else if (f_r > floor)
                 ns = moving_up;
             else if (f_r < floor)
-                ns = moving_down; // allow direction change mid-move
+                ns = moving_down; 
         end
 
         moving_down: begin
@@ -79,7 +115,7 @@ always @(*) begin
             else if (f_r < floor)
                 ns = moving_down;
             else if (f_r > floor)
-                ns = moving_up; // allow direction change mid-move
+                ns = moving_up; 
         end
 
         door_open: begin
@@ -95,9 +131,8 @@ always @(*) begin
     endcase
 end
 
-// =============================
 // Sequential logic
-// =============================
+
 always @(posedge c_out or posedge rst) begin
     if (rst) begin
         ps        <= idle;
@@ -111,12 +146,14 @@ always @(posedge c_out or posedge rst) begin
         ps <= ns;
 
         // Floor movement logic
+
         if (ps == moving_up && floor != 2'b11 && floor != f_r)
             floor <= floor + 1;
         else if (ps == moving_down && floor != 2'b00 && floor != f_r)
             floor <= floor - 1;
 
         // Timer logic
+
         if (ps == door_open) begin
             if (timer == 3)
                 timer <= 0;
@@ -126,7 +163,8 @@ always @(posedge c_out or posedge rst) begin
         else
             timer <= 0;
 
-        // Output logic based on current state
+        // Output logic based on present state (ps)
+
         case (ps)
             idle: begin
                 move_up   <= 0;
@@ -164,9 +202,9 @@ end
 
 endmodule
 
-// =============================
-// Clock Divider
-// =============================
+
+// Clock Divider module
+
 module clockdivider(
     output reg c_out,
     input clk, rst
@@ -187,34 +225,4 @@ module clockdivider(
     end
 endmodule
 
-// =============================
-// Top Module
-// =============================
-module top(
-    input clk, rst,
-    input [3:0] floor_request,
-    output move_up, move_down, open_door,
-    output [1:0] floor,
-    output [3:0] f_o,
-    output led
-);
-    wire c_out;
-    assign led = c_out;
- 
-    clockdivider clk_div(
-        .c_out(c_out),
-        .clk(clk),
-        .rst(rst)
-    );
-                     
-    lift elevator(
-        .c_out(c_out),
-        .rst(rst),
-        .floor_request(floor_request), 
-        .move_up(move_up), 
-        .move_down(move_down), 
-        .open_door(open_door),
-        .floor(floor),
-        .f_o(f_o)
-    );
-endmodule
+
