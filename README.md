@@ -437,34 +437,7 @@ This integrated design makes the elevator control simple, modular, and easy to e
 
 ## State Transistion Diagram 
 
-                   +-------+
-                   |  idle |
-                   +-------+
-                   
-                     ^  | valid req
-                     |  |
-                     |  v
-     +-------------+      +-------------+
-     | moving_down |<---->|  moving_up  |
-     +-------------+      +-------------+
-                      |
-                      | arrived floor
-                      v        
-                 +------------+
-                 | door_open  |
-                 +------------+
-                      |
-                      | timer done
-                      v
-                 +------------+
-                 | door_close |
-                 +------------+
-                      |
-                      |
-                      v
-                   +-------+
-                   | idle  |
-                   +-------+
+![state diagram](https://github.com/DHANASRI-A/VLSI_Projects/blob/de6709dc94e6178941fe6a802e8156bab1dd15c6/Pictures/state%20diagram.png)
 
 
 ## Hardware Interface and ZedBoard PMOD LED Mapping
