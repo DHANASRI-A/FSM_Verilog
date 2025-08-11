@@ -499,6 +499,9 @@ For detailed pin locations and PMOD connector mapping, please refer to the figur
 ![image alt](https://github.com/DHANASRI-A/VLSI_Projects/blob/8b240c7f7d10d2fe119c465f001cc209d9c9884c/Pictures/Resource%20Utilization.png)
 
 ---
+## Output Image 
+
+![image](https://github.com/DHANASRI-A/FSM_Verilog/blob/53391563457a1dcac3d251904f16671bb6e5efd9/Pictures/output_image.jpg)
 
 ## Output Video
 
